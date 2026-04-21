@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bejo N' Haptic Agency</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --white: #fafaf8;
+    --ink: #111110;
+    --mid: #f2f0eb;
+    --border: rgba(0,0,0,0.08);
+    --muted: #888580;
+    --accent: #c94b1e;
+    --accent2: #e8a44a;
+    --ff-display: 'Syne', sans-serif;
+    --ff-body: 'DM Sans', sans-serif;
+  }
+  html { scroll-behavior: smooth; }
+  body { background: var(--white); color: var(--ink); font-family: var(--ff-body); font-size: 16px; line-height: 1.6; overflow-x: hidden; }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.2rem 5%;
+    background: rgba(250,250,248,0.9);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+  }
+  .logo { font-family: var(--ff-display); font-size: 1.2rem; font-weight: 800; letter-spacing: -0.02em; line-height: 1.1; }
+  .logo span { color: var(--accent); }
+  .logo sub { display: block; font-family: var(--ff-body); font-size: 0.58rem; font-weight: 400; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-top: 1px; }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.88rem; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-cta { background: var(--ink); color: var(--white); border: none; padding: 0.65rem 1.5rem; font-family: var(--ff-body); font-size: 0.88rem; font-weight: 500; cursor: pointer; border-radius: 2px; transition: background 0.2s; }
+  .nav-cta:hover { background: var(--accent); }
+
+  .hero { min-height: 100vh; padding: 10rem 5% 5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; position: relative; overflow: hidden; }
+  .hero::after { content: ''; position: absolute; top: -10%; right: -5%; width: 55vw; height: 110%; background: var(--mid); border-radius: 0 0 0 40% / 0 0 0 20%; z-index: 0; }
+  .hero-left { position: relative; z-index: 1; }
+  .hero-right { position: relative; z-index: 1; }
+
+  .hero-tag { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(201,75,30,0.35); color: var(--accent); font-size: 0.72rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; padding: 0.35rem 1rem; border-radius: 2px; margin-bottom: 2rem; }
+  .hero-tag::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: blink 2s infinite; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+  .hero h1 { font-family: var(--ff-display); font-size: clamp(2.8rem, 5.5vw, 5rem); font-weight: 800; line-height: 1.0; letter-spacing: -0.03em; margin-bottom: 1.8rem; }
+  .hero h1 em { color: var(--accent); font-style: normal; }
+  .hero h1 .stroke { -webkit-text-stroke: 1.5px var(--ink); color: transparent; }
+  .hero-desc { color: var(--muted); font-size: 1rem; line-height: 1.75; max-width: 44ch; margin-bottom: 2.5rem; }
+
+  .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn-primary { background: var(--accent); color: #fff; border: none; padding: 0.95rem 2.2rem; font-family: var(--ff-body); font-size: 0.95rem; font-weight: 500; cursor: pointer; border-radius: 2px; transition: transform 0.2s, opacity 0.2s; }
+  .btn-primary:hover { transform: translateY(-2px); opacity: 0.88; }
+  .btn-ghost { background: transparent; color: var(--ink); border: 1px solid rgba(0,0,0,0.2); padding: 0.95rem 2.2rem; font-family: var(--ff-body); font-size: 0.95rem; cursor: pointer; border-radius: 2px; transition: border-color 0.2s, background 0.2s; }
+  .btn-ghost:hover { border-color: var(--ink); background: rgba(0,0,0,0.04); }
+
+  .hero-visual { background: var(--white); border: 1px solid var(--border); border-radius: 4px; padding: 2.5rem 2rem; box-shadow: 0 2px 40px rgba(0,0,0,0.07); }
+  .hw-label { font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.5rem; }
+  .hw-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+  .hw-chip { background: var(--mid); border-radius: 3px; padding: 1rem; font-size: 0.82rem; font-weight: 500; color: var(--ink); display: flex; align-items: center; gap: 8px; }
+  .hw-chip-icon { font-size: 1rem; }
+  .hw-bar-wrap { margin-top: 1.5rem; }
+  .hw-bar-label { display: flex; justify-content: space-between; font-size: 0.78rem; color: var(--muted); margin-bottom: 6px; }
+  .hw-bar { height: 6px; background: #e5e3de; border-radius: 10px; overflow: hidden; margin-bottom: 10px; }
+  .hw-bar-fill { height: 100%; border-radius: 10px; background: var(--accent); transition: width 1.4s ease; }
+  .hw-stat-row { display: flex; gap: 1rem; margin-top: 1.5rem; }
+  .hw-stat { flex: 1; }
+  .hw-stat-num { font-family: var(--ff-display); font-size: 1.8rem; font-weight: 800; line-height: 1; }
+  .hw-stat-num span { color: var(--accent); }
+  .hw-stat-lbl { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 2px; }
+
+  .marquee-wrap { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 1rem 0; overflow: hidden; background: var(--mid); }
+  .marquee-track { display: flex; gap: 3rem; width: max-content; animation: mq 22s linear infinite; }
+  @keyframes mq { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+  .mq-item { font-family: var(--ff-display); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); white-space: nowrap; display: flex; align-items: center; gap: 1rem; }
+  .mq-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); }
+
+  section { padding: 7rem 5%; }
+  .sec-label { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.2rem; }
+  .sec-title { font-family: var(--ff-display); font-size: clamp(2rem, 4.5vw, 3.4rem); font-weight: 800; line-height: 1.05; letter-spacing: -0.02em; margin-bottom: 4rem; max-width: 22ch; }
+
+  #services { background: var(--white); }
+  .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+  .service-card { background: var(--white); padding: 2.5rem 2rem; transition: background 0.25s; cursor: default; }
+  .service-card:hover { background: var(--mid); }
+  .svc-num { font-family: var(--ff-display); font-size: 0.72rem; font-weight: 800; letter-spacing: 0.12em; color: var(--accent); margin-bottom: 1.5rem; }
+  .service-card h3 { font-family: var(--ff-display); font-size: 1.25rem; font-weight: 700; margin-bottom: 0.8rem; }
+  .service-card p { color: var(--muted); font-size: 0.92rem; line-height: 1.75; }
+  .svc-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 1.4rem; }
+  .svc-tag { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.06em; background: var(--mid); color: var(--muted); padding: 3px 10px; border-radius: 2px; border: 1px solid var(--border); }
+
+  #process { background: var(--mid); }
+  .process-steps { display: flex; flex-direction: column; gap: 0; }
+  .process-step { display: grid; grid-template-columns: 80px 1fr; gap: 2rem; align-items: start; padding: 2rem 0; border-top: 1px solid var(--border); }
+  .step-num { font-family: var(--ff-display); font-size: 3rem; font-weight: 800; color: rgba(0,0,0,0.07); line-height: 1; padding-top: 4px; }
+  .step-content h3 { font-family: var(--ff-display); font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem; }
+  .step-content p { color: var(--muted); font-size: 0.92rem; line-height: 1.75; max-width: 52ch; }
+
+  #pricing { background: var(--white); }
+  .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; }
+  .pricing-card { background: var(--white); border: 1px solid var(--border); border-radius: 4px; padding: 2.5rem 2rem; position: relative; transition: border-color 0.3s, transform 0.3s; }
+  .pricing-card:hover { border-color: rgba(0,0,0,0.2); transform: translateY(-4px); }
+  .pricing-card.featured { border-color: var(--accent); background: #fdf8f5; }
+  .feat-badge { position: absolute; top: -1px; left: 50%; transform: translateX(-50%); background: var(--accent); color: #fff; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.3rem 1.2rem; border-radius: 0 0 4px 4px; }
+  .plan-name { font-family: var(--ff-display); font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; }
+  .plan-desc { color: var(--muted); font-size: 0.88rem; margin-bottom: 2rem; }
+  .plan-price { font-family: var(--ff-display); font-size: 2.8rem; font-weight: 800; line-height: 1; margin-bottom: 0.3rem; }
+  .plan-price sup { font-size: 1.1rem; vertical-align: super; }
+  .plan-period { color: var(--muted); font-size: 0.82rem; margin-bottom: 2rem; }
+  .plan-features { list-style: none; margin-bottom: 2rem; }
+  .plan-features li { padding: 0.55rem 0; border-bottom: 1px solid var(--border); font-size: 0.88rem; color: var(--muted); display: flex; align-items: center; gap: 10px; }
+  .plan-features li::before { content: ''; width: 14px; height: 14px; border-radius: 50%; background: #ede9e3; border: 1px solid #d4cfc7; flex-shrink: 0; }
+  .plan-features li.yes { color: var(--ink); }
+  .plan-features li.yes::before { background: var(--accent); border-color: var(--accent); }
+  .btn-plan { width: 100%; padding: 0.9rem; font-family: var(--ff-body); font-size: 0.92rem; font-weight: 500; border-radius: 2px; cursor: pointer; border: 1px solid rgba(0,0,0,0.18); background: transparent; color: var(--ink); transition: all 0.2s; }
+  .btn-plan:hover { background: rgba(0,0,0,0.05); }
+  .btn-plan.accent { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .btn-plan.accent:hover { opacity: 0.88; }
+
+  .cta-band { background: var(--ink); padding: 5rem 5%; display: flex; justify-content: space-between; align-items: center; gap: 2rem; flex-wrap: wrap; }
+  .cta-band h2 { font-family: var(--ff-display); font-size: clamp(1.8rem, 3.5vw, 2.8rem); font-weight: 800; color: var(--white); max-width: 22ch; line-height: 1.1; }
+  .cta-band h2 em { color: var(--accent2); font-style: normal; }
+  .btn-white { background: var(--white); color: var(--ink); border: none; padding: 1.1rem 2.5rem; font-family: var(--ff-body); font-size: 0.95rem; font-weight: 700; border-radius: 2px; cursor: pointer; white-space: nowrap; transition: opacity 0.2s; }
+  .btn-white:hover { opacity: 0.88; }
+
+  footer { background: var(--mid); padding: 3rem 5%; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; border-top: 1px solid var(--border); }
+  footer p { color: var(--muted); font-size: 0.82rem; }
+
+  .fade-in { opacity: 0; transform: translateY(22px); transition: opacity 0.65s ease, transform 0.65s ease; }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">
+    Bejo N' <span>Haptic</span>
+    <sub>Creative Agency</sub>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#services">Servizi</a></li>
+    <li><a href="#process">Processo</a></li>
+    <li><a href="#pricing">Piani</a></li>
+    <li><a href="#contact">Contatti</a></li>
+  </ul>
+  <button class="nav-cta">Parliamo del tuo progetto →</button>
+</nav>
+
+<section class="hero">
+  <div class="hero-left fade-in">
+    <div class="hero-tag">Agenzia Creativa · Territorio Locale</div>
+    <h1>Il tuo brand,<br><em>finalmente</em><br><span class="stroke">riconoscibile.</span></h1>
+    <p class="hero-desc">Dalla prima idea al sito web: curiamo l'identità visiva e la presenza digitale delle realtà locali che vogliono farsi ricordare. Logo, brand identity, comunicazione — tutto in un unico partner.</p>
+    <div class="hero-actions">
+      <button class="btn-primary">Scopri i piani</button>
+      <button class="btn-ghost">Vedi i progetti →</button>
+    </div>
+  </div>
+  <div class="hero-right fade-in">
+    <div class="hero-visual">
+      <div class="hw-label">Cosa costruiamo per te</div>
+      <div class="hw-grid">
+        <div class="hw-chip"><span class="hw-chip-icon">✦</span> Logo Design</div>
+        <div class="hw-chip"><span class="hw-chip-icon">◈</span> Brand Identity</div>
+        <div class="hw-chip"><span class="hw-chip-icon">▣</span> Sito Web</div>
+        <div class="hw-chip"><span class="hw-chip-icon">◉</span> Social Visual</div>
+      </div>
+      <div class="hw-bar-wrap">
+        <div class="hw-bar-label"><span>Riconoscibilità brand</span><span id="v1">0%</span></div>
+        <div class="hw-bar"><div class="hw-bar-fill" id="b1" style="width:0%"></div></div>
+        <div class="hw-bar-label"><span>Coerenza visiva</span><span id="v2">0%</span></div>
+        <div class="hw-bar"><div class="hw-bar-fill" id="b2" style="width:0%"></div></div>
+        <div class="hw-bar-label"><span>Presenza digitale</span><span id="v3">0%</span></div>
+        <div class="hw-bar"><div class="hw-bar-fill" id="b3" style="width:0%"></div></div>
+      </div>
+      <div class="hw-stat-row">
+        <div class="hw-stat"><div class="hw-stat-num">80<span>+</span></div><div class="hw-stat-lbl">Brand curati</div></div>
+        <div class="hw-stat"><div class="hw-stat-num">5<span>★</span></div><div class="hw-stat-lbl">Rating medio</div></div>
+        <div class="hw-stat"><div class="hw-stat-num">3<span>x</span></div><div class="hw-stat-lbl">Visibilità media</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="marquee-wrap">
+  <div class="marquee-track" id="mtrack"></div>
+</div>
+
+<section id="services">
+  <p class="sec-label fade-in">— Cosa facciamo</p>
+  <h2 class="sec-title fade-in">Tutto quello che serve per costruire un brand solido sul territorio.</h2>
+  <div class="services-grid fade-in">
+    <div class="service-card">
+      <div class="svc-num">01</div>
+      <h3>Logo & Identità Visiva</h3>
+      <p>Progettiamo loghi unici e sistemi visivi coerenti: palette, tipografia, iconografia. Un'identità che racconta chi sei prima ancora che tu apra bocca.</p>
+      <div class="svc-tags"><span class="svc-tag">Logo design</span><span class="svc-tag">Palette</span><span class="svc-tag">Brand guidelines</span></div>
+    </div>
+    <div class="service-card">
+      <div class="svc-num">02</div>
+      <h3>Brand Identity Completa</h3>
+      <p>Dal biglietto da visita al packaging, dalla carta intestata ai materiali promozionali. Il tuo brand applicato su ogni touchpoint fisico e digitale.</p>
+      <div class="svc-tags"><span class="svc-tag">Materiali stampa</span><span class="svc-tag">Packaging</span><span class="svc-tag">Signage</span></div>
+    </div>
+    <div class="service-card">
+      <div class="svc-num">03</div>
+      <h3>Sito Web</h3>
+      <p>Siti vetrina e landing page progettati per convertire: design curato, velocità, ottimizzazione mobile e SEO locale per farti trovare nel tuo territorio.</p>
+      <div class="svc-tags"><span class="svc-tag">Web design</span><span class="svc-tag">SEO locale</span><span class="svc-tag">Mobile first</span></div>
+    </div>
+    <div class="service-card">
+      <div class="svc-num">04</div>
+      <h3>Visual per Social Media</h3>
+      <p>Template, post, storie e contenuti visivi coordinati con la tua brand identity. Presenza digitale riconoscibile anche scorrendo veloce il feed.</p>
+      <div class="svc-tags"><span class="svc-tag">Template social</span><span class="svc-tag">Contenuti</span><span class="svc-tag">Visual design</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="process">
+  <p class="sec-label fade-in">— Come lavoriamo</p>
+  <h2 class="sec-title fade-in">Un processo chiaro, senza sorprese.</h2>
+  <div class="process-steps">
+    <div class="process-step fade-in">
+      <div class="step-num">01</div>
+      <div class="step-content">
+        <h3>Ascolto & Analisi</h3>
+        <p>Iniziamo con una call gratuita per capire la tua realtà, il tuo mercato locale e i tuoi obiettivi. Analizziamo la concorrenza e definiamo il posizionamento giusto per te.</p>
+      </div>
+    </div>
+    <div class="process-step fade-in">
+      <div class="step-num">02</div>
+      <div class="step-content">
+        <h3>Strategia & Concept</h3>
+        <p>Traduciamo tutto in una direzione creativa precisa: moodboard, concept visivo e proposta di identità. Ti mostriamo la strada prima di percorrerla.</p>
+      </div>
+    </div>
+    <div class="process-step fade-in">
+      <div class="step-num">03</div>
+      <div class="step-content">
+        <h3>Design & Sviluppo</h3>
+        <p>Progettiamo logo, brand system e sito web con revisioni condivise in ogni fase. Nessuna sorpresa a fine lavoro: costruiamo insieme, passo dopo passo.</p>
+      </div>
+    </div>
+    <div class="process-step fade-in">
+      <div class="step-num">04</div>
+      <div class="step-content">
+        <h3>Consegna & Supporto</h3>
+        <p>Rilasciamo tutto il materiale in formato pronto all'uso con un brand manual dettagliato. Restiamo al tuo fianco anche dopo il lancio.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="pricing">
+  <p class="sec-label fade-in">— Piani e prezzi</p>
+  <h2 class="sec-title fade-in">Soluzioni pensate per le realtà locali. Nessun costo nascosto.</h2>
+  <div class="pricing-grid">
+    <div class="pricing-card fade-in">
+      <div class="plan-name">Starter</div>
+      <div class="plan-desc">Perfetto per chi parte da zero e ha bisogno di un'identità solida.</div>
+      <div class="plan-price"><sup>€</sup>690</div>
+      <div class="plan-period">una tantum · IVA esclusa</div>
+      <ul class="plan-features">
+        <li class="yes">Logo design (3 concept)</li>
+        <li class="yes">Palette colori & tipografia</li>
+        <li class="yes">Brand guidelines base</li>
+        <li>Brand identity completa</li>
+        <li>Sito web</li>
+        <li>Template social</li>
+      </ul>
+      <button class="btn-plan">Inizia con Starter</button>
+    </div>
+    <div class="pricing-card featured fade-in">
+      <div class="feat-badge">Più scelto</div>
+      <div class="plan-name">Brand Complete</div>
+      <div class="plan-desc">La soluzione completa per chi vuole un brand professionale e un sito funzionante.</div>
+      <div class="plan-price"><sup>€</sup>1.490</div>
+      <div class="plan-period">una tantum · IVA esclusa</div>
+      <ul class="plan-features">
+        <li class="yes">Logo design (5 concept)</li>
+        <li class="yes">Brand identity completa</li>
+        <li class="yes">Materiali stampa base</li>
+        <li class="yes">Sito web vetrina (5 pagine)</li>
+        <li class="yes">Template social (6 formati)</li>
+        <li class="yes">Brand manual PDF</li>
+      </ul>
+      <button class="btn-plan accent">Inizia con Brand Complete</button>
+    </div>
+    <div class="pricing-card fade-in">
+      <div class="plan-name">Custom</div>
+      <div class="plan-desc">Per chi ha esigenze specifiche o vuole un partner creativo continuativo.</div>
+      <div class="plan-price">Su misura</div>
+      <div class="plan-period">preventivo gratuito</div>
+      <ul class="plan-features">
+        <li class="yes">Tutto di Brand Complete</li>
+        <li class="yes">E-commerce o sito avanzato</li>
+        <li class="yes">Gestione social mensile</li>
+        <li class="yes">Aggiornamenti continuativi</li>
+        <li class="yes">Account dedicato</li>
+        <li class="yes">Priorità assoluta</li>
+      </ul>
+      <button class="btn-plan">Richiedi preventivo</button>
+    </div>
+  </div>
+</section>
+
+<div class="cta-band fade-in">
+  <h2>Hai un'attività locale?<br><em>Meriti un brand all'altezza.</em></h2>
+  <button class="btn-white">Parliamo del tuo progetto →</button>
+</div>
+
+<footer id="contact">
+  <div class="logo" style="font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;">
+    Bejo N' <span style="color:var(--accent)">Haptic</span>
+    <sub style="display:block;font-family:'DM Sans',sans-serif;font-size:0.55rem;font-weight:400;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);margin-top:1px;">Creative Agency</sub>
+  </div>
+  <p>© 2025 Bejo N' Haptic Agency</p>
+  <p>ciao@bejohaptic.it</p>
+</footer>
+
+<script>
+  const items = ['Logo Design','Brand Identity','Sito Web','Visual Social','Grafica Stampa','Brand Guidelines','SEO Locale','Naming','Packaging','Moodboard'];
+  const track = document.getElementById('mtrack');
+  [...items,...items].forEach(t => {
+    const el = document.createElement('div');
+    el.className = 'mq-item';
+    el.innerHTML = '<span class="mq-dot"></span>' + t;
+    track.appendChild(el);
+  });
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  setTimeout(() => {
+    const bars = [['b1','v1',92],['b2','v2',88],['b3','v3',95]];
+    bars.forEach(([bid,vid,val]) => {
+      document.getElementById(bid).style.width = val + '%';
+      document.getElementById(vid).textContent = val + '%';
+    });
+  }, 600);
+</script>
+</body>
+</html>
